@@ -5,14 +5,17 @@ using UnityEngine;
 public class VehicleController : MonoBehaviour
 {
 
-    private float speed = 5.0f;
-    private float turnSpeed = 25.0f;
+    private float speed = 25.0f;
+    private float turnSpeed = 45.0f;
     private float horizontalInput;
     private float verticalInput;
+    private bool jumpKeyWasPressed;
+    private Rigidbody rigidBodyComponent;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        rigidBodyComponent = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
@@ -28,5 +31,23 @@ public class VehicleController : MonoBehaviour
 
         //Rotates vehicle based on input
         transform.Rotate(Vector3.up, Time.deltaTime * turnSpeed * horizontalInput);
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            jumpKeyWasPressed = true;
+        }
+    }
+
+    private void FixedUpdate()
+    {
+
+
+        if (jumpKeyWasPressed)
+        {
+            rigidBodyComponent.AddForce(Vector3.up * 7, ForceMode.VelocityChange);
+            jumpKeyWasPressed = false;
+        }
+
+
     }
 }
